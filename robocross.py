@@ -5,6 +5,7 @@ import os
 import json
 from datetime import datetime
 from flask.ext.restful import reqparse
+from pprint import pprint
 
 app = Flask(__name__)
 
@@ -43,12 +44,13 @@ def DumpResult(data):
         json.dump(data, outfile)
 
 def LoadResult(file_name):
-    json_loaded = json.load(open(file_name))
-    json_converted = {}
+    json_loaded = json.load(open(os.path.join(RESULTS_LOCATION, file_name)))
+    json_converted = {
+        u"run_date":file_name[0:10].replace('.', '/'),
+        u"run_start":file_name[11:19].replace('.', ':')
+    }
     for k, v in json_loaded.items():
-        json_converted[k] = v
-        if v == None:
-            json_converted[k] = 0
+        json_converted[k] = 0 if v == None else v
     return json_converted
 
 def LoadResults():
@@ -56,8 +58,9 @@ def LoadResults():
     for dirName, subdirList, fileList in os.walk(RESULTS_LOCATION):
         for f in fileList:
             if f.find('.json') > -1:
-                results.append(LoadResult(os.path.join(RESULTS_LOCATION, f)))
-    return results
+                results.append(LoadResult(f))
+    sorted_results = sorted(results, key=lambda k: k['total'], reverse=True)
+    return sorted_results
 
 @app.route('/')
 def main_page():
@@ -71,7 +74,8 @@ def result():
 
 @app.route('/results', methods=['GET'])
 def result_set():
-    return jsonify(results=LoadResults())
+    results = LoadResults()
+    return render_template('results.html', results=results)
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robocross Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-default" role="navigation">
+      <p class="navbar-text col-sm-2">Robo Cross Results</p>
+      <div class="col-sm-8"></div>
+      <p class="col-sm-1 pull-right"></p>
+      <button type="button" class="btn btn-default navbar-btn col-sm-1 pull-right" id="load_scoring">Scoring</button>
+    </nav>
+
+    <div>
+    <p class="col-sm-1"></p>
+    <div class="col-sm-10">
+      <table id="results" class="table table-bordered">
+      <tr>
+        <th>Operator 1</th>
+        <th>Operator 2</th>
+        <th>Run Date</th>
+        <th>Run Start</th>
+        <th>Duration</th>
+        <th>Total</th>
+      </tr>
+      {% for item in results %}
+        <tr>
+          <td>{{ item.operator_1 }}</td>
+          <td>{{ item.operator_2 }}</td>
+          <td>{{ item.run_date}}</td>
+          <td>{{ item.run_start}}</td>
+          <td>{{ item.time}}</td>
+          <td>{{ item.total }}</td>
+        </tr>
+      {% endfor %}
+      </table>
+    </div>
+    <p class="col-sm-1 pull-right"></p>
+
+    <script src="static/lib/jquery/jquery-2.0.3.min.js"></script>
+    <script src="static/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/js/results.js"></script>
+
+  </body>
+</html>
+

@@ -116,6 +116,12 @@ function enable_zone_item(item_type, item_number, item_zone){
 };
 
 $(function(){
+    $('#load_results').on('click', function(e){
+        location = '/results';
+    });
+});
+
+$(function(){
     $('#robocross_run').on('submit', function(e){
         e.preventDefault();
         var form_data = $('#robocross_run').serialize();
@@ -131,6 +137,3 @@ $(function(){
         });
     });
 });
-
-
-
